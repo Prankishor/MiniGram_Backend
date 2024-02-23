@@ -74,8 +74,10 @@ public class PostController {
 	@GetMapping("/posts")
 	public ResponseEntity<PostResponse> getAllPost(
 			@RequestParam(value="pageNumber", defaultValue="0", required=false) Integer pageNumber, 
-			@RequestParam(value="pageSize", defaultValue="5", required=false) Integer pageSize){
-		PostResponse postResponse = this.postService.getAllPost(pageNumber, pageSize);
+			@RequestParam(value="pageSize", defaultValue="5", required=false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue="addedDate", required=false) String sortBy)	
+	{
+		PostResponse postResponse = this.postService.getAllPost(pageNumber, pageSize, sortBy);
 		return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
 	}
 	
@@ -128,7 +130,7 @@ public class PostController {
 	}
 	
 	//Serve Image
-	@GetMapping(value="post/image/{imageName}",produces = MediaType.IMAGE_JPEG_VALUE)
+	@GetMapping(value="/post/image/{imageName}",produces = MediaType.IMAGE_JPEG_VALUE)
 	public void downloadImage(@PathVariable("imageName") String imageName,
 			HttpServletResponse response) throws IOException{
 		InputStream resource = this.fileService.getResource(path, imageName);

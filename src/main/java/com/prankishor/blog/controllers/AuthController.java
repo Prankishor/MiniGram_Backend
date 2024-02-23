@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prankishor.blog.entities.User;
-import com.prankishor.blog.exceptions.ApiException;
 import com.prankishor.blog.payloads.JwtAuthRequest;
 import com.prankishor.blog.payloads.JwtAuthResponse;
 import com.prankishor.blog.payloads.UserDto;
 import com.prankishor.blog.security.JwtHelper;
 import com.prankishor.blog.services.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
@@ -39,8 +40,8 @@ public class AuthController {
 	@Autowired
 	private UserService userService;
 	
-//	@Autowired
-//	private ModelMapper modelMapper;
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	
 	@PostMapping("/login")
@@ -51,7 +52,7 @@ public class AuthController {
 		String token = this.jwtTokenHelper.generateToken(userDetails);
 		JwtAuthResponse response = new JwtAuthResponse();
 		response.setToken(token);
-		//response.setUser(this.modelMapper.map((User) userDetails, UserDto.class));
+		response.setUser(this.modelMapper.map((User) userDetails, UserDto.class));
 		return new ResponseEntity<JwtAuthResponse>(response, HttpStatus.OK);
 	}
 	private void authenticate(String username, String password) throws Exception {
@@ -70,14 +71,10 @@ public class AuthController {
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto)
+	public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto) throws Exception
 	{
 		UserDto registeredUser = this.userService.registerNewUser(userDto);
 		return new ResponseEntity<UserDto>(registeredUser, HttpStatus.CREATED);
 	}
-	
-	 @ExceptionHandler(BadCredentialsException.class)
-	    public String exceptionHandler() {
-	        return "Credentials Invalid !!";
-	    }
+
 }

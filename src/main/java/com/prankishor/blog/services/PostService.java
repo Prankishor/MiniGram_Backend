@@ -17,7 +17,7 @@ public interface PostService {
 	
 	//R
 	//All Post
-	PostResponse getAllPost(Integer pageNumber, Integer pageSize);
+	PostResponse getAllPost(Integer pageNumber, Integer pageSize, String sortBy);
 	
 	//Single Post
 	PostDto getPostById(Integer postId);

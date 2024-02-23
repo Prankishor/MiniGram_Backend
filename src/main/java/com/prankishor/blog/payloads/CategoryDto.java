@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CategoryDto {
+	
 	private int id;
 	@NotBlank
 	@Size(min=3, message="Minimum length of category name should be 3")
@@ -17,4 +18,8 @@ public class CategoryDto {
 	@NotBlank
 	@Size(min=10, message="Minimum length of description should be 10 characters")
 	private String CategoryDescription;
+	
+	public CategoryDto(String value) {
+        this.id = Integer.parseInt(value);
+    }
 }

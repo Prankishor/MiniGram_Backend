@@ -59,6 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		}
 		else
 		{
+			System.out.println("Token: " + requestToken);
 			System.out.println("Jwt token does not begin with Bearer");
 		}
 		
